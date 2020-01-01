@@ -13,6 +13,7 @@ export class RouteGuardService implements CanActivate {
     if (this.harCodeAuthenticationService.isUserLoggedIn()) {
       return true;
     }
+    this.router.navigate(['login']);
     return false;
   }
 }
