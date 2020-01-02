@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {TodoDataService} from '../service/data/todo-data.service';
+import {error} from 'util';
+import {TodoComponent} from '../todo/todo.component';
+import {Router} from '@angular/router';
 
 
 export class Todo {
@@ -14,21 +18,41 @@ export class Todo {
   styleUrls: ['./list-todos.component.css']
 })
 export class ListTodosComponent implements OnInit {
+  username: string;
+  todos = [];
+  message: string;
 
-  todos = [
-    new Todo(1, 'Learn AngularJs', true, new Date()),
-    new Todo(2, 'Learn Vuejs', false, new Date()),
-    new Todo(3, 'Learn Java', true, new Date()),
-    new Todo(4, 'Learn English', false, new Date()),
-    // {id: 1, description: 'Learn AngularJs'},
-    // {id: 2, description: 'Learn Vuejs'},
-    // {id: 3, description: 'Learn Java'},
-    // {id: 4, description: 'Learn English'},
-  ];
-
-  constructor() { }
+  constructor(
+      private toDoService: TodoDataService,
+      private router: Router
+  ) { }
 
   ngOnInit() {
+    this.username = sessionStorage.getItem('authenticaterUser');
+    this.refreshTodo();
+  }
+  refreshTodo() {
+    this.toDoService.retrieveAllTodos(this.username).subscribe(
+        response => {
+          console.log('response', response);
+          this.todos = response;
+        }
+    );
   }
 
+  deleteTodo(id: any) {
+    console.log('delete todo', id);
+    this.toDoService.deleteTodo(this.username, id).subscribe(
+        response => {
+          console.log('delete', response);
+          this.message = 'Delete Success';
+          this.refreshTodo();
+        }
+    );
+  }
+
+  updateTodo(id: any) {
+    console.log('UPDATE TODO', id);
+    this.router.navigate(['todos', id]);
+  }
 }

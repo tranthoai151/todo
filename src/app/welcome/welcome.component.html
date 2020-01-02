@@ -1,8 +1,16 @@
 <p>
   welcome {{name}} visit my TODO !!!!
 </p>
-<div>
+<div class="container">
   <p>
     You can manage your todos <a routerLink="/todos">Here</a>
   </p>
+</div>
+<div class="container">
+  Click here to get a customized welcome message
+  <button (click)="getWelcomeMessage()" type="button" class="btn btn-success">Get Welcome Message</button>
+</div>
+<div class="container">
+  <h2>Your Customized Welcome Message</h2>
+  {{welComeMessageFromService}}
 </div>
