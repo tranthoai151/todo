@@ -20,6 +20,7 @@ export class TodoComponent implements OnInit {
   ngOnInit() {
     this.username = sessionStorage.getItem('authenticaterUser');
     this.id = this.route.snapshot.params['id'];
+    this.todo = new Todo(1, '', false, new Date());
     this.toDoDataService.getTodoById(this.username, this.id).subscribe(
         data => this.todo = data
     );
